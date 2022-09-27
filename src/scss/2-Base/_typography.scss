@@ -1,1 +1,18 @@
 @use "../1-Helpers/helpers" as *;
+
+@font-face {
+  font-family: poppinsMedium;
+  src: url("../../assets/fonts/Poppins-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: poppinsBold;
+  src: url("../../assets/fonts/Poppins-Bold.ttf") format("truetype");
+}
+* {
+  font-family: $poppinsMed;
+}
+h1,
+h2,
+h3 {
+  font-family: $poppinsBold;
+}

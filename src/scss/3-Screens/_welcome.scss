@@ -1,0 +1,20 @@
+@use "../1-Helpers/helpers" as *;
+
+.welcome-container {
+  height: 100vh;
+  width: 100vw;
+  display: grid;
+  justify-content: center;
+}
+.welcome-wrap {
+  margin-top: 20vh;
+  background-color: chocolate;
+}
+.welcome-banner {
+  display: flex;
+  height: 10rem;
+}
+.wallet-logo {
+  height: 100%;
+  overflow: hidden;
+}

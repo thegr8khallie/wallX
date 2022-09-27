@@ -3,10 +3,10 @@ import { Welcome, AddAccount, Wallet, Registration } from "./screens";
 function App() {
   return (
     <div className="App">
-      {/* <Welcome /> */}
+      <Welcome />
       {/* <AddAccount /> */}
       {/* <Registration /> */}
-      <Wallet />
+      {/* <Wallet /> */}
     </div>
   );
 }

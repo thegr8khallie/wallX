@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# With WallX, your Algorand Tokens are safe
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+WallX is a cryptocurrency wallet which provides an interface for you to interact with your Algorand tokens. You do not store your tokens on WallX!
 
 ## Available Scripts
 
