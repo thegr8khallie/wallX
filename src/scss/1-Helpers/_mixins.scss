@@ -1,0 +1,19 @@
+@mixin circleConstructor($diameter, $bg-color) {
+  width: $diameter;
+  height: $diameter;
+  border-radius: 50%;
+  background-color: $bg-color;
+  display: grid;
+  place-items: center;
+}
+@mixin bgxoutline($color) {
+  background-color: $color;
+  outline-color: $color;
+}
+@mixin mesh {
+  background-color: #f0fff9;
+  background-image: radial-gradient(at 7% 11%, #6fc8c2 0px, transparent 50%),
+    radial-gradient(at 87% 12%, #ffc2ec 0px, transparent 50%),
+    radial-gradient(at 86% 100%, #fb7474 0px, transparent 50%),
+    radial-gradient(at 9% 86%, #c8baf8 0px, transparent 50%);
+}
