@@ -1,0 +1,52 @@
+@use "../1-Helpers/helpers" as *;
+.add-account {
+  width: 100vw;
+  height: 100vh;
+  padding: 5rem;
+}
+// .add-account-wrapper {
+// }
+.add-account-head {
+  width: 100%;
+  background-color: lighten(cyan, 20%);
+  padding: 1rem;
+  display: grid;
+  place-items: center;
+}
+.account-types {
+  display: flex;
+  justify-content: space-between;
+  padding: 5rem 0 0 0;
+  flex-wrap: wrap;
+}
+.account-type {
+  flex-basis: 20%;
+  background-color: beige;
+  padding: 1rem;
+  //   border: 1px solid;
+  //   border-radius: 1rem;
+}
+.account-type-head {
+  margin-bottom: 1rem;
+}
+p span {
+  color: darken($color: cyan, $amount: 25%);
+}
+@media only screen and (max-width: $tablet) {
+  .account-types {
+    gap: 5rem;
+    justify-content: space-around;
+  }
+  .account-type {
+    flex-basis: 30%;
+  }
+}
+@media only screen and (max-width: $mobile) {
+  .account-types {
+    gap: 3rem;
+    justify-content: space-between;
+  }
+  .account-type {
+    flex-basis: 100%;
+  }
+}

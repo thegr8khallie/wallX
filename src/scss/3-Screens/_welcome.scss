@@ -8,13 +8,18 @@
 }
 .welcome-wrap {
   margin-top: 20vh;
-  background-color: chocolate;
 }
 .welcome-banner {
   display: flex;
   height: 10rem;
+  margin-bottom: 5vh;
 }
 .wallet-logo {
   height: 100%;
-  overflow: hidden;
+}
+.welcome-text {
+  align-self: center;
+}
+.form-container {
+  padding: 1rem;
 }

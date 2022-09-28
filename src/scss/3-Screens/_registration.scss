@@ -1,0 +1,34 @@
+@use "../1-Helpers/helpers" as *;
+
+.registration-container {
+  width: 100vw;
+  height: 100vw;
+  padding: 5rem;
+}
+.new-account-form {
+}
+.seedphrase-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.seedphrase {
+  display: flex;
+  flex-wrap: wrap;
+  border: 0.5rem dashed darken($color: cyan, $amount: 25%);
+  background-color: #00ffff7f;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  span {
+    flex-basis: 10rem;
+  }
+}
+.new-account-form p {
+  margin-bottom: 1rem;
+}
+.new-account-continue {
+  margin: 0.5rem 0 1rem 0;
+}
+// .phrase-confirm {
+// }
+// .account-name {
+// }
