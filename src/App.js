@@ -2,6 +2,10 @@ import "./scss/style.scss";
 import { Welcome, AddAccount, Wallet, Registration } from "./screens";
 import { useState } from "react";
 function App() {
+  let [userInfo, setUserInfo] = useState(
+    JSON.parse(localStorage.getItem("user"))
+  );
+
   const phrase = [
     "hell",
     "hello",
@@ -20,12 +24,17 @@ function App() {
     "toxic",
     "bitch",
   ];
+
+  const consoleHandler = () => {
+    console.log(JSON.parse(localStorage.getItem("newUser")));
+    console.log(userInfo);
+  };
   const [seedPhrase, setSeedphrase] = useState(phrase);
   return (
     <div className="App">
-      {/* <Welcome /> */}
-      {/* <AddAccount /> */}
-      {/* <Registration phrase={seedPhrase} /> */}
+      {/* <Welcome getLocalStorage={consoleHandler} /> */}
+      {/* <AddAccount getLocalStorage={consoleHandler} /> */}
+      {/* <Registration phrase={seedPhrase} getLocalStorage={consoleHandler} /> */}
       <Wallet />
     </div>
   );
