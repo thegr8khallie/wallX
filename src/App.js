@@ -1,5 +1,12 @@
 import "./scss/style.scss";
-import { Welcome, AddAccount, Wallet, Registration } from "./screens";
+import {
+  Welcome,
+  AddAccount,
+  Registration,
+  ImportAccounts,
+  WatchAccount,
+  Wallet,
+} from "./screens";
 import { useState } from "react";
 function App() {
   let [userInfo, setUserInfo] = useState(
@@ -29,13 +36,15 @@ function App() {
     console.log(JSON.parse(localStorage.getItem("newUser")));
     console.log(userInfo);
   };
-  const [seedPhrase, setSeedphrase] = useState(phrase);
+  const [seedPhrase] = useState(phrase);
   return (
     <div className="App">
       {/* <Welcome getLocalStorage={consoleHandler} /> */}
       {/* <AddAccount getLocalStorage={consoleHandler} /> */}
       {/* <Registration phrase={seedPhrase} getLocalStorage={consoleHandler} /> */}
-      <Wallet />
+      {/* <ImportAccounts phrase={seedPhrase} /> */}
+      {/* <WatchAccount /> */}
+      {/* <Wallet /> */}
     </div>
   );
 }

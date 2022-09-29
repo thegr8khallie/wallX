@@ -1,0 +1,34 @@
+@use "../1-Helpers/helpers" as *;
+
+.import-form-container {
+  height: 100vh;
+  width: 100vw;
+  padding: 5rem;
+}
+.import-form {
+  text-align: center;
+  input[type="text"] {
+    flex-basis: 15%;
+  }
+}
+.input-control {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  border: 0.5rem dashed darken($color: cyan, $amount: 25%);
+  background-color: #00ffff7f;
+  padding: 1rem;
+  margin-bottom: 2rem;
+}
+// @media only screen and (max-width: $tablet) {
+//   .import-form {
+//     padding: 3rem;
+//   }
+// }
+@media only screen and (max-width: $mobile) {
+  .import-form {
+    input[type="text"] {
+      flex-basis: 45%;
+    }
+  }
+}

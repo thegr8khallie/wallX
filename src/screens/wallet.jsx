@@ -6,7 +6,7 @@ export const Wallet = () => {
         <div className="nav-logo">
           <img src={logo} alt="wallX icon" />
         </div>
-        <div className="nav-net">Testnet</div>
+        <div className="nav-net">Powered by Sandbox</div>
       </nav>
       <aside className="side-bar">
         <div className="added-accounts"></div>
@@ -23,14 +23,9 @@ export const Wallet = () => {
               <div>
                 <h3>HidAlgo</h3>
                 <p>
-                  aksadsdsa<button>cop</button>
+                  aksadsdsasjadnkjjka<button>cop</button>
                 </p>
               </div>
-              <button>
-                <a href="http://" target="_blank" rel="noopener noreferrer">
-                  Algoexplorer
-                </a>
-              </button>
             </div>
             <div className="algo-owned">
               <h2>Balance</h2>

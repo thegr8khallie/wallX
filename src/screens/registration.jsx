@@ -23,12 +23,7 @@ export const Registration = (props) => {
       setBackupSeed(false);
     }
   };
-  // const randomNumberArray = [
-  //   Math.floor(Math.random() * 16) + 1,
-  //   Math.floor(Math.random() * 16) + 1,
-  //   Math.floor(Math.random() * 16) + 1,
-  //   Math.floor(Math.random() * 16) + 1,
-  // ];
+
   const seed = JSON.parse(localStorage.getItem("newUser")).seedPhrase;
   const continue2Handler = () => {
     if (!seedField1 || !seedField2 || !seedField3 || !seedField4) {
@@ -39,7 +34,7 @@ export const Registration = (props) => {
       seedField3 !== seed[6] ||
       seedField4 !== seed[9]
     ) {
-      alert("Wallet not found, check seedphrase and try again");
+      alert("Incorrect seed Provided, check seedphrase and try again");
     } else {
       let newUserMod = JSON.parse(localStorage.getItem("newUser"));
       localStorage.setItem(
@@ -53,31 +48,30 @@ export const Registration = (props) => {
   };
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    if (!accountName) {
-      alert("Please provide an account name");
-    } else {
-      let newUserMod = JSON.parse(localStorage.getItem("newUser"));
-      localStorage.setItem(
-        "newUser",
-        JSON.stringify({
-          ...newUserMod,
-          accountName: accountName,
-        })
-      );
-      // let finalUserMod = JSON.parse(localStorage.getItem("newUser"));
-      // let mainUserStorage = JSON.parse(localStorage.getItem("user"));
-      // let mainUserAccounts = JSON.parse(localStorage.getItem("user")).accounts;
-      // localStorage.setItem(
-      //   "user",
-      //   JSON.stringify({ ...mainUserStorage, accounts: [...mainUserAccounts, finalUserMod]})
-      // );
-      // localStorage.removeItem('newUser')
-      setSeedField1("");
-      setSeedField2("");
-      setSeedField3("");
-      setSeedField4("");
-      setAccountName("");
-    }
+    let newUserMod = JSON.parse(localStorage.getItem("newUser"));
+    localStorage.setItem(
+      "newUser",
+      JSON.stringify({
+        ...newUserMod,
+        accountName: accountName ? accountName : "Unnamed Account",
+      })
+    );
+    let finalUserMod = JSON.parse(localStorage.getItem("newUser"));
+    let mainUserStorage = JSON.parse(localStorage.getItem("user"));
+    let mainUserAccounts = JSON.parse(localStorage.getItem("user")).accounts;
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...mainUserStorage,
+        accounts: [...mainUserAccounts, finalUserMod],
+      })
+    );
+    //localStorage.removeItem("newUser");
+    setSeedField1("");
+    setSeedField2("");
+    setSeedField3("");
+    setSeedField4("");
+    setAccountName("");
   };
 
   return (
@@ -122,9 +116,11 @@ export const Registration = (props) => {
         <ul
           className="phrase-confirm"
           style={
-            JSON.parse(localStorage.getItem("newUser")).hasOwnProperty(
-              "seedPhrase"
-            )
+            JSON.parse(localStorage.getItem("newUser")).seedPhraseConfirmed
+              ? { display: "none" }
+              : JSON.parse(localStorage.getItem("newUser")).hasOwnProperty(
+                  "seedPhrase"
+                )
               ? { display: "block" }
               : { display: "none" }
           }
