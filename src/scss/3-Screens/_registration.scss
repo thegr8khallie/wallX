@@ -5,7 +5,7 @@
   height: 100vw;
   padding: 5rem;
 }
-.new-account-form {
+.new-account-con {
 }
 .seedphrase-container h2 {
   text-align: center;
@@ -27,6 +27,14 @@
 }
 .new-account-continue {
   margin: 0.5rem 0 1rem 0;
+  background-color: cyan;
+  border: none;
+  padding: 0.5rem;
+  transition: 0.25s;
+  text-align: center;
+  &:hover {
+    background-color: lighten(cyan, 10%);
+  }
 }
 // .phrase-confirm {
 //   display: none;

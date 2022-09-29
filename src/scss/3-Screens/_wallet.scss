@@ -29,8 +29,20 @@
   background-color: #00ffff7f;
   .added-accounts {
     flex-basis: auto;
+    .wallets-saved {
+      width: 4rem;
+      background-color: beige;
+      display: grid;
+      place-items: center;
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-size: 2rem;
+      &.active-wallet {
+        border: 0.5rem solid green;
+      }
+    }
   }
-  .add-more {
+  .active-wallet .add-more {
     flex-basis: 4rem;
     width: 4rem;
     background-color: beige;

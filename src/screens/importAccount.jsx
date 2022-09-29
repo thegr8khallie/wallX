@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const ImportAccounts = (props) => {
+  const navigate = useNavigate();
   const seedPhrase = props.phrase;
   const seedPhraseArray = new Array(16).fill("");
   const [seedFields, setSeedFields] = useState(seedPhraseArray);
@@ -16,6 +18,7 @@ export const ImportAccounts = (props) => {
             ...newUserMod,
             seedPhrase: [...seedFields],
             accountName: accountName ? accountName : "Unnamed Account",
+            isActive: newUserMod.id === 1 ? true : false,
           })
         );
         let finalUserMod = JSON.parse(localStorage.getItem("newUser"));
@@ -30,6 +33,7 @@ export const ImportAccounts = (props) => {
             accounts: [...mainUserAccounts, finalUserMod],
           })
         );
+        navigate("/wallet");
       } else {
         alert("Wallet Not Found, Check Seedphrase and try Again");
       }

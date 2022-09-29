@@ -1,12 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Registration = (props) => {
+  const navigate = useNavigate();
   const [backupSeed, setBackupSeed] = useState(false);
   const [seedField1, setSeedField1] = useState("");
   const [seedField2, setSeedField2] = useState("");
   const [seedField3, setSeedField3] = useState("");
   const [seedField4, setSeedField4] = useState("");
   const [accountName, setAccountName] = useState("");
+
   const continue1Handler = () => {
     if (backupSeed === false) {
       alert("Please backup your seed and check the checkbox to continue");
@@ -25,6 +28,7 @@ export const Registration = (props) => {
   };
 
   const seed = JSON.parse(localStorage.getItem("newUser")).seedPhrase;
+
   const continue2Handler = () => {
     if (!seedField1 || !seedField2 || !seedField3 || !seedField4) {
       alert("Please fill all fields");
@@ -44,6 +48,7 @@ export const Registration = (props) => {
           seedPhraseConfirmed: true,
         })
       );
+      window.location.reload();
     }
   };
   const formSubmitHandler = (e) => {
@@ -54,6 +59,7 @@ export const Registration = (props) => {
       JSON.stringify({
         ...newUserMod,
         accountName: accountName ? accountName : "Unnamed Account",
+        isActive: newUserMod.id === 1 ? true : false,
       })
     );
     let finalUserMod = JSON.parse(localStorage.getItem("newUser"));
@@ -72,6 +78,7 @@ export const Registration = (props) => {
     setSeedField3("");
     setSeedField4("");
     setAccountName("");
+    navigate("/wallet");
   };
 
   return (
@@ -108,9 +115,9 @@ export const Registration = (props) => {
             I have backed up my Seed Phrase in the correct order
           </label>
           <br />
-          <button className="new-account-continue" onClick={continue1Handler}>
+          <div className="new-account-continue" onClick={continue1Handler}>
             Continue
-          </button>
+          </div>
         </div>
 
         <ul
@@ -163,7 +170,9 @@ export const Registration = (props) => {
               onChange={(e) => setSeedField4(e.target.value)}
             />
           </li>
-          <button onClick={continue2Handler}>Continue</button>
+          <div onClick={continue2Handler} className="new-account-continue">
+            Continue
+          </div>
         </ul>
         <div
           className="set-account-name"

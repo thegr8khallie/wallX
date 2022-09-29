@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/imgs/icon.png";
 
 export const Welcome = (props) => {
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const submitHandler = (e) => {
@@ -19,6 +21,7 @@ export const Welcome = (props) => {
       );
       setPassword("");
       setConfirmPassword("");
+      navigate("/add-account");
     }
   };
   return (
@@ -55,6 +58,7 @@ export const Welcome = (props) => {
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
             <br />
+
             <button className="continue">Continue</button>
           </form>
         </div>

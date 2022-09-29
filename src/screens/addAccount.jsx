@@ -1,11 +1,15 @@
+import { useNavigate } from "react-router-dom";
+
 export const AddAccount = (props) => {
-  const selectAccountTypeHandler = (accountType) => {
+  const navigate = useNavigate();
+  const selectAccountTypeHandler = (accountType, redirect) => {
     const savedAccounts = JSON.parse(localStorage.getItem("user")).accounts
       .length;
     localStorage.setItem(
       "newUser",
       JSON.stringify({ id: savedAccounts + 1, accountType: accountType })
     );
+    navigate(redirect);
   };
   return (
     <div className="add-account">
@@ -16,23 +20,31 @@ export const AddAccount = (props) => {
         <ul className="account-types">
           <li
             className="account-type"
-            onClick={() => selectAccountTypeHandler("New Account")}
+            onClick={() =>
+              selectAccountTypeHandler("New Account", "/register-new-account")
+            }
           >
             <h2 className="account-type-head">New Account</h2>
             <p className="account-type-desc">Create a new account</p>
           </li>
+
           <li
             className="account-type"
-            onClick={() => selectAccountTypeHandler("Imported Account")}
+            onClick={() =>
+              selectAccountTypeHandler("Imported Account", "/import-account")
+            }
           >
             <h2 className="account-type-head">Import account</h2>
             <p className="account-type-desc">
               Import account by providing the seed phrase
             </p>
           </li>
+
           <li
             className="account-type"
-            onClick={() => selectAccountTypeHandler("Watch Account")}
+            onClick={() =>
+              selectAccountTypeHandler("Watch Account", "/watch-account")
+            }
           >
             <h2 className="account-type-head">Watch Account</h2>
             <p className="account-type-desc">

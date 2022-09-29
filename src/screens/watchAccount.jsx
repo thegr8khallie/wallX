@@ -1,6 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const WatchAccount = () => {
+  const navigate = useNavigate();
   const [address, setAddress] = useState("");
   const [accountName, setAccountName] = useState("");
   const watchAccountSubmitHandler = (e) => {
@@ -12,6 +14,7 @@ export const WatchAccount = () => {
         ...newUserMod,
         accountName: accountName ? accountName : "Unnamed Account",
         address: address,
+        isActive: newUserMod.id === 1 ? true : false,
       })
     );
     let finalUserMod = JSON.parse(localStorage.getItem("newUser"));
@@ -24,6 +27,7 @@ export const WatchAccount = () => {
         accounts: [...mainUserAccounts, finalUserMod],
       })
     );
+    navigate("/wallet");
   };
   return (
     <div className="watch-account-container">
@@ -51,6 +55,7 @@ export const WatchAccount = () => {
           value={accountName}
           onChange={(e) => setAccountName(e.target.value)}
         />
+
         <input type="submit" value="Watch Account" />
       </form>
     </div>
