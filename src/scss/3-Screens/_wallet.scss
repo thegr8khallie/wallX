@@ -18,6 +18,9 @@
 .nav-net {
   align-self: center;
 }
+.refresh {
+  margin-bottom: 1rem;
+}
 .side-bar {
   display: flex;
   flex-direction: column;
@@ -81,6 +84,15 @@
   width: 20%;
   display: flex;
   justify-content: space-between;
+  gap: 10rem;
+}
+.send-algo {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  input[type="submit"] {
+    width: 10rem;
+  }
 }
 .spacing {
   margin: 2rem 0;

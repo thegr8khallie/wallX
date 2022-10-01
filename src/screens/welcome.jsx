@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/imgs/icon.png";
 
-export const Welcome = (props) => {
+export const Welcome = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -28,7 +28,7 @@ export const Welcome = (props) => {
     <div className="welcome-container">
       <div className="welcome-wrap">
         <div className="welcome-banner">
-          <div className="wallet-logo" onClick={props.getLocalStorage}>
+          <div className="wallet-logo">
             <img src={logo} alt="wallet Logo" />
           </div>
           <div className="welcome-text">

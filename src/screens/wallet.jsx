@@ -1,15 +1,25 @@
-import { useState } from "react";
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import algosdk from "algosdk";
 import logo from "../assets/imgs/icon.png";
 
 export const Wallet = () => {
   localStorage.removeItem("newUser");
   const userObject = JSON.parse(localStorage.getItem("user"));
-
   const availableAccounts = JSON.parse(localStorage.getItem("user")).accounts;
-
   const [walletState, setWalletState] = useState(availableAccounts);
-
+  const [sendButton, setSendButton] = useState({
+    value: "Send",
+    isFormOpen: false,
+  });
+  const [recieveButton, setRecieveButton] = useState({
+    value: "Recieve",
+  });
+  const [addressField, setAddressField] = useState("");
+  const [tokenField, setTokenField] = useState("");
+  const [transactionParams, setTransactionParams] = useState({});
+  const baseUrl = "https://node.testnet.algoexplorerapi.io/";
   const setActiveHandler = (id) => {
     setWalletState(
       walletState.map((e, f) => {
@@ -19,6 +29,46 @@ export const Wallet = () => {
       })
     );
   };
+  //Update Wallet Balances
+  useEffect(() => {
+    walletState.map((e) => {
+      axios.get(`${baseUrl}v2/accounts/${e.address}`).then((res) => {
+        setWalletState(
+          walletState.map((i) => {
+            return (
+              i.isActive && {
+                ...e,
+                balance: algosdk.microalgosToAlgos(res.data.amount),
+              }
+            );
+          })
+        );
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...userObject,
+            accounts: [...walletState],
+          })
+        );
+      });
+    });
+  }, []);
+  //Copy Address
+  useEffect(() => {
+    document.body.addEventListener("click", (e) => {
+      if (e.target.classList.contains("recieve-btn")) {
+        setRecieveButton({ value: "Address Copied!" });
+        const textToBeCopied = walletState.map((e) => {
+          return e.isActive && e.address;
+        });
+        navigator.clipboard.writeText(textToBeCopied);
+        setTimeout(() => {
+          setRecieveButton({ value: "Recieve" });
+        }, 3000);
+      }
+    });
+  }, []);
+
   localStorage.setItem(
     "user",
     JSON.stringify({
@@ -26,6 +76,61 @@ export const Wallet = () => {
       accounts: [...walletState],
     })
   );
+  const revealFormHandler = () => {
+    setSendButton({
+      value: !sendButton.isFormOpen ? "Close Form" : "Send",
+      isFormOpen: !sendButton.isFormOpen,
+    });
+  };
+  const sendTokensHandler = (e) => {
+    e.preventDefault();
+    if (tokenField === "" || addressField === "") {
+      alert("Please Fill the required fields and Try Again");
+    } else {
+      const transaction = async (arg) => {
+        const seedPhrase = walletState[0].seedPhraseString;
+        let account = algosdk.mnemonicToSecretKey(seedPhrase);
+        let amount = algosdk.algosToMicroalgos(tokenField);
+        let sender = account.addr;
+        let reciever = addressField;
+        let note = algosdk.encodeObj("Testing");
+        let txn = algosdk.makePaymentTxnWithSuggestedParams(
+          sender,
+          reciever,
+          amount,
+          undefined,
+          note,
+          arg
+        );
+        let signedTxn = txn.signTxn(account.sk);
+
+        const post = await axios({
+          method: "POST",
+          url: `${baseUrl}v2/transactions`,
+          headers: {
+            "Content-Type": "application/x-binary",
+          },
+          body: signedTxn,
+        });
+        console.log(post.data);
+      };
+      axios.get(`${baseUrl}v2/transactions/params`).then((res) => {
+        let params = res.data;
+        params.fee = 1000;
+        const transactionParams = {
+          flatFee: true,
+          fee: params.fee,
+          firstRound: params["last-round"],
+          lastRound: params["last-round"] + 1000,
+          genesisID: params["genesis-id"],
+          genesisHash: params["genesis-hash"],
+        };
+        transaction(transactionParams);
+      });
+      setAddressField("");
+      setTokenField("");
+    }
+  };
   return (
     <div className="wallet-container">
       <nav className="nav">
@@ -56,48 +161,72 @@ export const Wallet = () => {
       </aside>
       {walletState.map((a, b) => {
         return a.isActive ? (
-          <section className="main-section">
+          <section className="main-section" key={b}>
             <article className="info-sect">
               <h1>My Wallet</h1>
-              <div className="algo-price">1 algo: $(current algo price)</div>
+              <div className="algo-price">1 algo: $0.353</div>
             </article>
             <article className="algo-owned-container">
               <div className="algo-owned-info">
                 <div className="account-info">
                   <div>
                     <h3>{a.accountName}</h3>
-                    <p>aksadsdsasjadnkjjka</p>
+                    <p>{a.address}</p>
                   </div>
                 </div>
                 <div className="algo-owned">
                   <h2>Balance</h2>
                   <div>
-                    <span>Algo amount</span> algoIcon
+                    <span>{a.balance}</span> Algorand
                   </div>
                   <div>
-                    <span>USD equivalent</span> USD
+                    <span>{a.balance * 0.353}</span> USD
                   </div>
                 </div>
-                <div className="transact">
-                  <button>Send</button>
-                  <button>Recieve</button>
+                <div
+                  className="transact"
+                  style={
+                    a.accountType === "Watch Account"
+                      ? { display: "none" }
+                      : { display: "block" }
+                  }
+                >
+                  <button onClick={revealFormHandler}>
+                    {sendButton.value}
+                  </button>
+                  <button className="recieve-btn">{recieveButton.value}</button>
                 </div>
               </div>
+              <form
+                className="send-algo"
+                style={
+                  sendButton.isFormOpen
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+                onSubmit={sendTokensHandler}
+              >
+                <input
+                  type="text"
+                  id="address-field"
+                  placeholder="Enter address here"
+                  value={addressField}
+                  onChange={(e) => setAddressField(e.target.value)}
+                />
+                <input
+                  type="text"
+                  id="amount-field"
+                  placeholder="Algos to send"
+                  value={tokenField}
+                  onChange={(e) => setTokenField(e.target.value)}
+                />
+                <input type="submit" value="Send" />
+              </form>
             </article>
             <div className="spacing"></div>
             <article className="assets-owned-container">
               <ul className="assets-owned">
-                <li className="asset-owned">
-                  <div>Icon</div>
-                  <div>
-                    <h3>Asset name</h3>
-                    <h3>Asset value in USD</h3>
-                  </div>
-                  <div>
-                    <h3>Asset bal</h3>
-                    <h3>asset worth in USD</h3>
-                  </div>
-                </li>
+                <h1>Transactions</h1>
               </ul>
             </article>
           </section>

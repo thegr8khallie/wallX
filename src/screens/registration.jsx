@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+//import algosdk from "algosdk";
 
-export const Registration = (props) => {
+export const Registration = () => {
   const navigate = useNavigate();
   const [backupSeed, setBackupSeed] = useState(false);
   const [seedField1, setSeedField1] = useState("");
@@ -10,6 +11,7 @@ export const Registration = (props) => {
   const [seedField4, setSeedField4] = useState("");
   const [accountName, setAccountName] = useState("");
 
+  const seed = JSON.parse(localStorage.getItem("newUser")).seedPhrase;
   const continue1Handler = () => {
     if (backupSeed === false) {
       alert("Please backup your seed and check the checkbox to continue");
@@ -19,7 +21,7 @@ export const Registration = (props) => {
         "newUser",
         JSON.stringify({
           ...newUserMod,
-          seedPhrase: props.phrase,
+          seedPhraseBackedUp: true,
           seedPhraseConfirmed: false,
         })
       );
@@ -27,16 +29,14 @@ export const Registration = (props) => {
     }
   };
 
-  const seed = JSON.parse(localStorage.getItem("newUser")).seedPhrase;
-
   const continue2Handler = () => {
     if (!seedField1 || !seedField2 || !seedField3 || !seedField4) {
       alert("Please fill all fields");
     } else if (
-      seedField2 !== seed[11] ||
-      seedField1 !== seed[3] ||
-      seedField3 !== seed[6] ||
-      seedField4 !== seed[9]
+      seedField1 !== seed[17] ||
+      seedField2 !== seed[13] ||
+      seedField3 !== seed[21] ||
+      seedField4 !== seed[4]
     ) {
       alert("Incorrect seed Provided, check seedphrase and try again");
     } else {
@@ -72,7 +72,6 @@ export const Registration = (props) => {
         accounts: [...mainUserAccounts, finalUserMod],
       })
     );
-    //localStorage.removeItem("newUser");
     setSeedField1("");
     setSeedField2("");
     setSeedField3("");
@@ -86,19 +85,15 @@ export const Registration = (props) => {
       <form className="new-account-form" onSubmit={formSubmitHandler}>
         <div
           style={
-            JSON.parse(localStorage.getItem("newUser")).hasOwnProperty(
-              "seedPhrase"
-            )
+            JSON.parse(localStorage.getItem("newUser")).seedPhraseBackedUp
               ? { display: "none" }
               : { display: "block" }
           }
         >
           <div className="seedphrase-container">
-            <h2 className="seedphrase-head" onClick={props.getLocalStorage}>
-              Seed Phrase
-            </h2>
+            <h2 className="seedphrase-head">Seed Phrase</h2>
             <div className="seedphrase">
-              {props.phrase.map((i, j) => (
+              {seed.map((i, j) => (
                 <span key={`word${j + 1}`}> {`${j + 1}. ${i}`} </span>
               ))}
             </div>
@@ -125,15 +120,13 @@ export const Registration = (props) => {
           style={
             JSON.parse(localStorage.getItem("newUser")).seedPhraseConfirmed
               ? { display: "none" }
-              : JSON.parse(localStorage.getItem("newUser")).hasOwnProperty(
-                  "seedPhrase"
-                )
+              : JSON.parse(localStorage.getItem("newUser")).seedPhraseBackedUp
               ? { display: "block" }
               : { display: "none" }
           }
         >
           <li className="phrase-word-confirm">
-            <label htmlFor="word10">Word 4: </label>
+            <label htmlFor="word10">Word 18: </label>
             <input
               type="text"
               id="4"
@@ -144,7 +137,7 @@ export const Registration = (props) => {
             />
           </li>
           <li className="phrase-word-confirm">
-            <label htmlFor="word10">Word 12: </label>
+            <label htmlFor="word10">Word 14: </label>
             <input
               type="text"
               id="12"
@@ -153,7 +146,7 @@ export const Registration = (props) => {
             />
           </li>
           <li className="phrase-word-confirm">
-            <label htmlFor="word10">Word 7: </label>
+            <label htmlFor="word10">Word 22: </label>
             <input
               type="text"
               id="7"
@@ -162,7 +155,7 @@ export const Registration = (props) => {
             />
           </li>
           <li className="phrase-word-confirm">
-            <label htmlFor="word10">Word 10: </label>
+            <label htmlFor="word10">Word 5: </label>
             <input
               type="text"
               id="10"

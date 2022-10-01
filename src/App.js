@@ -9,11 +9,8 @@ import {
 } from "./screens";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-function App() {
-  let [userInfo, setUserInfo] = useState(
-    JSON.parse(localStorage.getItem("user"))
-  );
 
+function App() {
   const phrase = [
     "hell",
     "hello",
@@ -32,11 +29,6 @@ function App() {
     "toxic",
     "bitch",
   ];
-
-  const consoleHandler = () => {
-    console.log(JSON.parse(localStorage.getItem("newUser")));
-    console.log(userInfo);
-  };
   const [seedPhrase] = useState(phrase);
   return (
     <Routes>
@@ -48,25 +40,17 @@ function App() {
             <Wallet />
           ) : localStorage.getItem("user") &&
             JSON.parse(localStorage.getItem("user")).accounts.length === 0 ? (
-            <AddAccount getLocalStorage={consoleHandler} />
+            <AddAccount />
           ) : (
-            <Welcome getLocalStorage={consoleHandler} />
+            <Welcome />
           )
         }
       />
-      <Route
-        path="/create-wallet"
-        element={<Welcome getLocalStorage={consoleHandler} />}
-      />
-      <Route
-        path="/add-account"
-        element={<AddAccount getLocalStorage={consoleHandler} />}
-      />
+      <Route path="/create-wallet" element={<Welcome />} />
+      <Route path="/add-account" element={<AddAccount />} />
       <Route
         path="/register-new-account"
-        element={
-          <Registration phrase={seedPhrase} getLocalStorage={consoleHandler} />
-        }
+        element={<Registration phrase={seedPhrase} />}
       />
       <Route
         path="/import-account"

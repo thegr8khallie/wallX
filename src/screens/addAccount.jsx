@@ -1,29 +1,51 @@
 import { useNavigate } from "react-router-dom";
+import algosdk from "algosdk";
 
-export const AddAccount = (props) => {
+export const AddAccount = () => {
   const navigate = useNavigate();
-  const selectAccountTypeHandler = (accountType, redirect) => {
-    const savedAccounts = JSON.parse(localStorage.getItem("user")).accounts
-      .length;
+  const savedAccounts = JSON.parse(localStorage.getItem("user")).accounts
+    .length;
+  const id = savedAccounts + 1;
+  const notNewAccountHandler = (accountType, redirect) => {
     localStorage.setItem(
       "newUser",
-      JSON.stringify({ id: savedAccounts + 1, accountType: accountType })
+      JSON.stringify({ id: id, accountType: accountType })
     );
     navigate(redirect);
+  };
+
+  const newAccountHandler = () => {
+    const newAccount = algosdk.generateAccount();
+    const newAccountAddress = newAccount.addr;
+    const secretKey = newAccount.sk;
+    const newAccountMnemonic = algosdk.secretKeyToMnemonic(newAccount.sk);
+    // const algodToken =
+    //   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+    // const algodServer = "http://localhost";
+    // const algodPort = 4001;
+    // let algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
+    // let balance = algodClient.accountInformation(newAccount.addr).do().amount;
+    const newUser = JSON.stringify({
+      id: id,
+      accountType: "New Account",
+      seedPhrase: newAccountMnemonic.split(" "),
+      seedPhraseString: newAccountMnemonic,
+      address: newAccountAddress,
+      seedPhraseBackedUp: false,
+      balance: 0,
+    });
+    localStorage.setItem("newUser", newUser);
+    console.log(newAccountMnemonic);
+    navigate("/register-new-account");
   };
   return (
     <div className="add-account">
       <div className="add-account-wrapper">
-        <div className="add-account-head" onClick={props.getLocalStorage}>
+        <div className="add-account-head">
           <h1>Add Account</h1>
         </div>
         <ul className="account-types">
-          <li
-            className="account-type"
-            onClick={() =>
-              selectAccountTypeHandler("New Account", "/register-new-account")
-            }
-          >
+          <li className="account-type" onClick={newAccountHandler}>
             <h2 className="account-type-head">New Account</h2>
             <p className="account-type-desc">Create a new account</p>
           </li>
@@ -31,7 +53,7 @@ export const AddAccount = (props) => {
           <li
             className="account-type"
             onClick={() =>
-              selectAccountTypeHandler("Imported Account", "/import-account")
+              notNewAccountHandler("Imported Account", "/import-account")
             }
           >
             <h2 className="account-type-head">Import account</h2>
@@ -43,7 +65,7 @@ export const AddAccount = (props) => {
           <li
             className="account-type"
             onClick={() =>
-              selectAccountTypeHandler("Watch Account", "/watch-account")
+              notNewAccountHandler("Watch Account", "/watch-account")
             }
           >
             <h2 className="account-type-head">Watch Account</h2>
@@ -51,7 +73,7 @@ export const AddAccount = (props) => {
               Inspect the balance and transactions on a public address
             </p>
           </li>
-          <li className="account-type" onClick={selectAccountTypeHandler}>
+          <li className="account-type">
             <h2 className="account-type-head">Cold Wallet Interface</h2>
             <p className="account-type-desc">
               Access your hardware wallet accounts on Ledger, trezor etc.
