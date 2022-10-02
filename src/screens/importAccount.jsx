@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import algosdk from "algosdk";
 
-export const ImportAccounts = (props) => {
+export const ImportAccounts = () => {
   const navigate = useNavigate();
   const [seedFields, setSeedFields] = useState(new Array(25).fill(""));
   const [accountName, setAccountName] = useState("");

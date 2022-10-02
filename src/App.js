@@ -7,29 +7,9 @@ import {
   WatchAccount,
   Wallet,
 } from "./screens";
-import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
-  const phrase = [
-    "hell",
-    "hello",
-    "jasper",
-    "cameron",
-    "soccer",
-    "author",
-    "quench",
-    "delve",
-    "find",
-    "taunt",
-    "apple",
-    "ball",
-    "miracle",
-    "lies",
-    "toxic",
-    "bitch",
-  ];
-  const [seedPhrase] = useState(phrase);
   return (
     <Routes>
       <Route
