@@ -18,7 +18,6 @@ export const Wallet = () => {
   });
   const [addressField, setAddressField] = useState("");
   const [tokenField, setTokenField] = useState("");
-  const [transactionParams, setTransactionParams] = useState({});
   const baseUrl = "https://node.testnet.algoexplorerapi.io/";
   const setActiveHandler = (id) => {
     setWalletState(
@@ -87,48 +86,43 @@ export const Wallet = () => {
     if (tokenField === "" || addressField === "") {
       alert("Please Fill the required fields and Try Again");
     } else {
-      const transaction = async (arg) => {
+      const transaction = async () => {
+        //Client Parameters
+        const algodToken =
+          "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+        const algodServer = "https://node.testnet.algoexplorerapi.io";
+        const algodPort = 443;
+        //Init client
+        const client = new algosdk.Algodv2(algodToken, algodServer, algodPort);
+        //Get accounts
         const seedPhrase = walletState[0].seedPhraseString;
         let account = algosdk.mnemonicToSecretKey(seedPhrase);
-        let amount = algosdk.algosToMicroalgos(tokenField);
+        //Get suggested params
+        const params = await client.getTransactionParams().do();
+        //Get transaction params
         let sender = account.addr;
         let reciever = addressField;
-        let note = algosdk.encodeObj("Testing");
-        let txn = algosdk.makePaymentTxnWithSuggestedParams(
-          sender,
-          reciever,
-          amount,
-          undefined,
-          note,
-          arg
-        );
-        let signedTxn = txn.signTxn(account.sk);
-
-        const post = await axios({
-          method: "POST",
-          url: `${baseUrl}v2/transactions`,
-          headers: {
-            "Content-Type": "application/x-binary",
-          },
-          body: signedTxn,
+        let amount = algosdk.algosToMicroalgos(tokenField);
+        //Generate transaction object
+        const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+          from: sender,
+          to: reciever,
+          amount: amount,
+          suggestedParams: params,
         });
-        console.log(post.data);
+        //Sign transaction
+        let signedTxn = txn.signTxn(account.sk);
+        //Send Transaction
+        const txnSent = await client.sendRawTransaction(signedTxn).do();
+        console.log(txnSent);
       };
-      axios.get(`${baseUrl}v2/transactions/params`).then((res) => {
-        let params = res.data;
-        params.fee = 1000;
-        const transactionParams = {
-          flatFee: true,
-          fee: params.fee,
-          firstRound: params["last-round"],
-          lastRound: params["last-round"] + 1000,
-          genesisID: params["genesis-id"],
-          genesisHash: params["genesis-hash"],
-        };
-        transaction(transactionParams);
-      });
+      transaction();
       setAddressField("");
       setTokenField("");
+      setSendButton({
+        value: "Send",
+        isFormOpen: false,
+      });
     }
   };
   return (
@@ -137,7 +131,7 @@ export const Wallet = () => {
         <div className="nav-logo">
           <img src={logo} alt="wallX icon" />
         </div>
-        <div className="nav-net">Powered by Sandbox</div>
+        <div className="nav-net">Powered by AlgoD</div>
       </nav>
       <aside className="side-bar">
         <div className="added-accounts">
@@ -188,7 +182,7 @@ export const Wallet = () => {
                   style={
                     a.accountType === "Watch Account"
                       ? { display: "none" }
-                      : { display: "block" }
+                      : { display: "flex" }
                   }
                 >
                   <button onClick={revealFormHandler}>

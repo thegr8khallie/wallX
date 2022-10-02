@@ -17,14 +17,7 @@ export const AddAccount = () => {
   const newAccountHandler = () => {
     const newAccount = algosdk.generateAccount();
     const newAccountAddress = newAccount.addr;
-    const secretKey = newAccount.sk;
     const newAccountMnemonic = algosdk.secretKeyToMnemonic(newAccount.sk);
-    // const algodToken =
-    //   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-    // const algodServer = "http://localhost";
-    // const algodPort = 4001;
-    // let algodClient = new algosdk.Algodv2(algodToken, algodServer, algodPort);
-    // let balance = algodClient.accountInformation(newAccount.addr).do().amount;
     const newUser = JSON.stringify({
       id: id,
       accountType: "New Account",
