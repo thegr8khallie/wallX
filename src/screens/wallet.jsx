@@ -18,11 +18,11 @@ export const Wallet = () => {
   });
   const [addressField, setAddressField] = useState("");
   const [tokenField, setTokenField] = useState("");
-  const [password, setPassword] = useState({
-    password: "",
-    isSubmitting: false,
-    isPasswordCorrect: false,
-  });
+  // const [password, setPassword] = useState({
+  //   password: "",
+  //   isSubmitting: false,
+  //   isPasswordCorrect: false,
+  // });
   const baseUrl = "https://node.testnet.algoexplorerapi.io/";
   const setActiveHandler = (id) => {
     setWalletState(
@@ -154,6 +154,7 @@ export const Wallet = () => {
         let signedTxn = txn.signTxn(account.sk);
         //Send Transaction
         const txnSent = await client.sendRawTransaction(signedTxn).do();
+        console.log(txnSent);
       };
       transaction();
       setAddressField("");

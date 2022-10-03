@@ -13,4 +13,4 @@ WallX works like any other cryptocurrency wallet would. It can be used to create
 
 ### Link to the Demo Video
 
-[WallX demo video](https://node.testnet.algoexplorerapi.io/)
+[WallX demo video](https://youtu.be/oFNfe9aZikk)
