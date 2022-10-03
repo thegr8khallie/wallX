@@ -17,6 +17,7 @@ export const ImportAccounts = () => {
       JSON.stringify({
         ...newUserMod,
         seedPhrase: [...seedFields],
+        seedPhraseString: mnemonic,
         accountName: accountName ? accountName : "Unnamed Account",
         isActive: newUserMod.id === 1 ? true : false,
         address: account.addr,

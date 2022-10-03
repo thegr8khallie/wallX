@@ -1,70 +1,16 @@
-# With WallX, your Algorand Tokens are safe
+# WallX for Algorand
 
-WallX is a cryptocurrency wallet which provides an interface for you to interact with your Algorand tokens. You do not store your tokens on WallX!
+WallX is a simple cryptocurrency wallet which is built on the Algorand blockchain. You can perform basic wallet functions such as Creating an account, recieving tokens and signing transactions. This project was completed using React, SCSS and the Algorand Javascript SDK. It currently works on the Algorand Testnet node[Algorand Testnet node](https://node.testnet.algoexplorerapi.io/)
 
-## Available Scripts
+## How it Works
 
-In the project directory, you can run:
+WallX works like any other cryptocurrency wallet would. It can be used to create an an account and sign transactions which reflect on the blockchain.
 
-### `npm start`
+- On start, you are prompted to provide a password initialize the account creation process.
+- After that step is out of the way, you can either choose to add an account by creating a new account, importing an existing account using your seedphrase or watching an account by providing just the address.
+- To send transactions, Simply hit the send button and this reveals a transaction form with can be filled out with the address of the reciever and the amount of crypto to be sent.
+- The add button is used to add more accounts to the wallet.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Link to the Demo Video
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[WallX demo video](https://node.testnet.algoexplorerapi.io/)

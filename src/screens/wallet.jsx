@@ -18,6 +18,11 @@ export const Wallet = () => {
   });
   const [addressField, setAddressField] = useState("");
   const [tokenField, setTokenField] = useState("");
+  const [password, setPassword] = useState({
+    password: "",
+    isSubmitting: false,
+    isPasswordCorrect: false,
+  });
   const baseUrl = "https://node.testnet.algoexplorerapi.io/";
   const setActiveHandler = (id) => {
     setWalletState(
@@ -28,18 +33,18 @@ export const Wallet = () => {
       })
     );
   };
-  //Update Wallet Balances
+
   useEffect(() => {
-    walletState.map((e) => {
+    walletState.map((e, f) => {
       axios.get(`${baseUrl}v2/accounts/${e.address}`).then((res) => {
         setWalletState(
-          walletState.map((i) => {
-            return (
-              i.isActive && {
-                ...e,
-                balance: algosdk.microalgosToAlgos(res.data.amount),
-              }
-            );
+          walletState.map((i, j) => {
+            return f === j
+              ? {
+                  ...i,
+                  balance: algosdk.microalgosToAlgos(res.data.amount),
+                }
+              : i;
           })
         );
         localStorage.setItem(
@@ -52,21 +57,24 @@ export const Wallet = () => {
       });
     });
   }, []);
+
   //Copy Address
-  useEffect(() => {
-    document.body.addEventListener("click", (e) => {
-      if (e.target.classList.contains("recieve-btn")) {
-        setRecieveButton({ value: "Address Copied!" });
-        const textToBeCopied = walletState.map((e) => {
-          return e.isActive && e.address;
-        });
-        navigator.clipboard.writeText(textToBeCopied);
-        setTimeout(() => {
-          setRecieveButton({ value: "Recieve" });
-        }, 3000);
-      }
-    });
-  }, []);
+  const copyAddressHandler = () => {
+    setRecieveButton({ value: "Address Copied!" });
+    const textToBeCopied = walletState
+      .map((i) => {
+        if (i.isActive) {
+          return i.address;
+        }
+      })
+      .find((j) => {
+        return j !== undefined && j;
+      });
+    navigator.clipboard.writeText(textToBeCopied);
+    setTimeout(() => {
+      setRecieveButton({ value: "Recieve" });
+    }, 3000);
+  };
 
   localStorage.setItem(
     "user",
@@ -81,6 +89,30 @@ export const Wallet = () => {
       isFormOpen: !sendButton.isFormOpen,
     });
   };
+  // const closePopupHandler = () => {
+  //   setPassword({
+  //     ...password,
+  //     isSubmitting: false,
+  //   });
+  // };
+  // const checkPasswordHandler = (e) => {
+  //   e.preventDefault();
+  //   const userPassword = JSON.parse(localStorage.getItem("user")).password;
+  //   let isPasswordCorrect = password.password === userPassword ? true : false;
+  //   if (!isPasswordCorrect) {
+  //     console.log(password, userPassword);
+  //     alert("Password Incorrect");
+  //     return isPasswordCorrect;
+  //   } else {
+  //     setPassword({
+  //       ...password,
+  //       isSubmitting: false,
+  //       isPasswordCorrect: true,
+  //     });
+  //     return isPasswordCorrect;
+  //   }
+  // };
+  //Token Send Function
   const sendTokensHandler = (e) => {
     e.preventDefault();
     if (tokenField === "" || addressField === "") {
@@ -95,7 +127,15 @@ export const Wallet = () => {
         //Init client
         const client = new algosdk.Algodv2(algodToken, algodServer, algodPort);
         //Get accounts
-        const seedPhrase = walletState[0].seedPhraseString;
+        const seedPhrase = walletState
+          .map((j) => {
+            if (j.isActive) {
+              return j.seedPhraseString;
+            }
+          })
+          .find((i) => {
+            return i !== undefined && i;
+          });
         let account = algosdk.mnemonicToSecretKey(seedPhrase);
         //Get suggested params
         const params = await client.getTransactionParams().do();
@@ -114,7 +154,6 @@ export const Wallet = () => {
         let signedTxn = txn.signTxn(account.sk);
         //Send Transaction
         const txnSent = await client.sendRawTransaction(signedTxn).do();
-        console.log(txnSent);
       };
       transaction();
       setAddressField("");
@@ -188,7 +227,9 @@ export const Wallet = () => {
                   <button onClick={revealFormHandler}>
                     {sendButton.value}
                   </button>
-                  <button className="recieve-btn">{recieveButton.value}</button>
+                  <button className="recieve-btn" onClick={copyAddressHandler}>
+                    {recieveButton.value}
+                  </button>
                 </div>
               </div>
               <form
@@ -218,15 +259,36 @@ export const Wallet = () => {
               </form>
             </article>
             <div className="spacing"></div>
-            <article className="assets-owned-container">
-              <ul className="assets-owned">
-                <h1>Transactions</h1>
-              </ul>
-            </article>
           </section>
         ) : null;
       })}
       <footer>Built on Algorand</footer>
+      {/* <div
+        className="popup-container"
+        style={
+          password.isSubmitting ? { display: "grid" } : { display: "none" }
+        }
+      >
+        <form className="popup-form" onSubmit={checkPasswordHandler}>
+          <input
+            type="password"
+            value={password.password}
+            placeholder="Type in your Password"
+            onChange={(e) => {
+              setPassword({
+                ...password,
+                password: e.target.value,
+              });
+            }}
+          />
+          <div className="btn-wrapper">
+            <div className="cancel" onClick={closePopupHandler}>
+              Cancel
+            </div>
+            <input type="submit" value="Send" />
+          </div>
+        </form>
+      </div> */}
     </div>
   );
 };

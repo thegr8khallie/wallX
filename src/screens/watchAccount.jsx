@@ -12,9 +12,14 @@ export const WatchAccount = () => {
       "newUser",
       JSON.stringify({
         ...newUserMod,
+        seedPhrase: null,
+        seedPhraseString: null,
         accountName: accountName ? accountName : "Unnamed Account",
         address: address,
         isActive: newUserMod.id === 1 ? true : false,
+        balance: 0,
+        seedPhraseBackedUp: false,
+        seedPhraseConfirmed: false,
       })
     );
     let finalUserMod = JSON.parse(localStorage.getItem("newUser"));
